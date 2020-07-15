@@ -8,12 +8,7 @@
 import React from "react"
 import PropTypes from "prop-types"
 import { useStaticQuery, graphql } from "gatsby"
-import {
-  IdentityModal,
-  useIdentityContext,
-  IdentityContextProvider,
-  useNetlifyIdentity
-} from "react-netlify-identity-widget"
+import { IdentityContextProvider } from "react-netlify-identity-widget"
 
 import Header from "./header"
 import "./layout.css"
@@ -21,10 +16,15 @@ import "react-netlify-identity-widget/styles.css"
 import "@reach/tabs/styles.css"
 
 const Layout = ({ children }) => {
+  // const identity = useNetlifyIdentity(
+  //   "https://gatby-netlify-identity-f.netlify.app/"
+  // )
 
-const identity = useNetlifyIdentity()
-
-const data = useStaticQuery(graphql`
+  // const url =
+  //   process.env.REACT_APP_NETLIFY_IDENTITY_URL ||
+  //   "https://gatby-netlify-identity-f.netlify.app/"
+  const url = "https://gatby-netlify-identity-f.netlify.app"
+  const data = useStaticQuery(graphql`
     query SiteTitleQuery {
       site {
         siteMetadata {
@@ -35,7 +35,7 @@ const data = useStaticQuery(graphql`
   `)
 
   return (
-    <>
+    <IdentityContextProvider url={url}>
       <Header siteTitle={data.site.siteMetadata.title} />
       <div
         style={{
@@ -45,13 +45,14 @@ const data = useStaticQuery(graphql`
         }}
       >
         <main>{children}</main>
+
         <footer>
           © {new Date().getFullYear()}, Built with
           {` `}
           <a href="https://www.gatsbyjs.org">Gatsby</a>
         </footer>
       </div>
-    </>
+    </IdentityContextProvider>
   )
 }
 
