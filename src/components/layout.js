@@ -8,12 +8,23 @@
 import React from "react"
 import PropTypes from "prop-types"
 import { useStaticQuery, graphql } from "gatsby"
+import {
+  IdentityModal,
+  useIdentityContext,
+  IdentityContextProvider,
+  useNetlifyIdentity
+} from "react-netlify-identity-widget"
 
 import Header from "./header"
 import "./layout.css"
+import "react-netlify-identity-widget/styles.css"
+import "@reach/tabs/styles.css"
 
 const Layout = ({ children }) => {
-  const data = useStaticQuery(graphql`
+
+const identity = useNetlifyIdentity()
+
+const data = useStaticQuery(graphql`
     query SiteTitleQuery {
       site {
         siteMetadata {
